@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection.Extensions;
-
-namespace AuthServer.Extentions;
+﻿namespace AuthServer.Extentions;
 
 public static class AuthServerServiceCollectionExtensions
 {
@@ -16,7 +14,30 @@ public static class AuthServerServiceCollectionExtensions
             throw new ArgumentNullException(nameof(services));
         }
 
-        services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        services
+             .AddHttpContextAccessor()
+             .AddSingleton<ResourceReader>()
+             .AddScoped<WellKnownConfiguration>()
+             .AddScoped<OAuth2Token>()
+             .AddScoped<IJwtSigningService, JwtSigningService>()
+             .AddScoped<IJwtUtils, JwtUtils>()
+             .AddScoped<ClientDataProvider>()
+             .AddScoped<ITenantsDataProvider, TenantsDataProvider>()
+             .AddScoped<IAuthPageViewService, AuthPageViewService>()
+             //    .AddScoped<IAuthPageViewService, AuthPageViewService> ()
+             .AddScoped<AuthRequestContext>((sp) =>
+             {
+                 return sp.GetHttpContextFeature<AuthRequestContext>() ?? new AuthRequestContext();
+             })
+             .AddScoped<TenantSettings>((sp) =>
+             {
+                 return sp.GetHttpContextFeature<TenantSettings>() ?? new TenantSettings();
+             })
+             ;
+
+        services
+            .AddOptions<AuthSettings>().BindConfiguration("AuthSettings");
+
         return services;
     }
 }

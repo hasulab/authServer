@@ -1,4 +1,5 @@
 ﻿using AuthServer.Middlewares;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AuthServer.Extentions;
 
