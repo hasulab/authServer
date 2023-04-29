@@ -4,6 +4,7 @@ public class Constants
 {
     public static class Auth
     {
+        const string defaultNamespace = "AuthServer";
         public static class Errors
         {
             public const string invalid_request = "invalid_request";
@@ -25,8 +26,8 @@ public class Constants
             //"/.well-known/openid-configuration"
             public const string V1Url = "/{tenantId}/.well-known/openid-configuration";
             public const string V2Url = "/{tenantId}/v2.0/.well-known/openid-configuration";
-            public const string V1ConfigresourceName = "AuthServer.Sample.Resources.openid-configuration.json";
-            public const string V2ConfigresourceName = "AuthServer.Sample.Resources.V2.openid-configuration.json";
+            public const string V1ConfigresourceName = defaultNamespace + ".Resources.openid-configuration.json";
+            public const string V2ConfigresourceName = defaultNamespace + ".Resources.V2.openid-configuration.json";
 
             public const string V1EPName = "v1-well-known-config";
             public const string V2EPName = "v2-well-known-config";
@@ -78,16 +79,16 @@ public class Constants
             public const string V1GetEPName = "Get-v1-auth-login";
             public const string V2GetEPName = "Get-v2-auth-login";
 
-            public const string V1ResourceName = "AuthServer.Sample.Resources.auth-login-page.html";
-            public const string V2ResourceName = "AuthServer.Sample.Resources.V2.auth-login-page.html";
+            public const string V1ResourceName = defaultNamespace + ".Resources.auth-login-page.html";
+            public const string V2ResourceName = defaultNamespace + ".Resources.V2.auth-login-page.html";
 
         }
 
         public static class IndexPage
         {
 
-            public const string V1ResourceName = "AuthServer.Sample.Resources.auth-index-page.html";
-            public const string V2ResourceName = "AuthServer.Sample.Resources.V2.auth-index-page.html";
+            public const string V1ResourceName = defaultNamespace + ".Resources.auth-index-page.html";
+            public const string V2ResourceName = defaultNamespace + ".Resources.V2.auth-index-page.html";
 
         }
 
