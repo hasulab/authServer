@@ -31,6 +31,8 @@ public static class AuthServerApplicationBuilderExtensions
         }
 
         app.UseAuthMiddlewares();
+        //app.UseEndpoints();
+        app.UseRouting();
         app.UseAuthEndpoints();
     }
 
