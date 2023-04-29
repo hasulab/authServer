@@ -14,6 +14,24 @@ public class AuthMiddleware
     }
     public Task Invoke(HttpContext httpContext)
     {
+        httpContext.SetRequestContext();
+
+        if (httpContext.HasValidAuthPath())
+        {
+            return AwaitRequestTask(httpContext);
+        }
+
         return _next(httpContext);
+
+        static async Task AwaitRequestTask(HttpContext httpContext)
+        {
+            if (httpContext.Request.HasFormContentType)
+            {
+                await httpContext.Request.FormContentToJson();
+            }
+
+            httpContext.SetTenantsContext();
+            await Task.CompletedTask;
+        }
     }
 }
