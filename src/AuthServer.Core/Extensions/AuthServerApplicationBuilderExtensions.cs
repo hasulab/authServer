@@ -1,5 +1,6 @@
 ﻿using AuthServer.Middlewares;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.FileProviders;
 
 namespace AuthServer.Extensions;
 
@@ -35,6 +36,21 @@ public static class AuthServerApplicationBuilderExtensions
         //app.UseEndpoints();
         app.UseRouting();
         app.UseAuthEndpoints();
+    }
+
+    public static void UseAuthStaticFiles(this WebApplication app)
+    {
+        var currentFileProvider = app.Environment.ContentRootFileProvider as PhysicalFileProvider;
+
+        //get app current ContentRootFileProvider
+
+        var myFileProvider = new MyPhysicalFileProvider(currentFileProvider?.Root!, app?.Services?.GetService<IHttpContextAccessor>()!);
+        app.Environment.ContentRootFileProvider = myFileProvider;
+
+        app.UseStaticFiles(new StaticFileOptions()
+        {
+            FileProvider = myFileProvider
+        });
     }
 
     public static IApplicationBuilder UseAuthMiddleware(this IApplicationBuilder builder)
