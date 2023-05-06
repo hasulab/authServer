@@ -1,8 +1,8 @@
 ﻿using System.Text;
 
-namespace AuthServer.Extentions;
+namespace AuthServer.Extensions;
 
-public static class StringExtentions
+public static class StringExtensions
 { 
     public static string ToBase64String(this string plainText)
     {

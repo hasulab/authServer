@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using AuthServer.Extensions;
 
 namespace AuthServer.Middlewares;
 

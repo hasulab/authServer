@@ -1,19 +1,20 @@
 ﻿using AuthServer.Middlewares;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.FileProviders;
 
-namespace AuthServer.Extentions;
+namespace AuthServer.Extensions;
 
 public static class AuthServerApplicationBuilderExtensions
 {
     /// <summary>
-    /// Adds a <see cref="EndpointRoutingMiddleware"/> middleware to the specified <see cref="IApplicationBuilder"/>.
+    /// Adds a <see cref="AuthMiddleware"/> middleware to the specified <see cref="WebApplication"/>.
     /// </summary>
-    /// <param name="builder">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
+    /// <param name="app">The <see cref="WebApplication"/> to add the middleware to.</param>
     /// <returns>A reference to this instance after the operation has completed.</returns>
     /// <remarks>
     /// <para>
-    /// A call to <see cref="UseRouting(IApplicationBuilder)"/> must be followed by a call to
-    /// <see cref="UseEndpoints(IApplicationBuilder, Action{IEndpointRouteBuilder})"/> for the same <see cref="IApplicationBuilder"/>
+    /// A call to <see cref="UseAuthServer(WebApplication)"/> must be followed by a call to
+    /// <see cref="UseAuthServer(WebApplication)"/> for the same <see cref="WebApplication"/>
     /// instance.
     /// </para>
     /// <para>
@@ -31,13 +32,29 @@ public static class AuthServerApplicationBuilderExtensions
             throw new ArgumentNullException(nameof(app));
         }
 
-        app.UseAuthMiddlewares();
+        app.UseAuthMiddleware();
         //app.UseEndpoints();
         app.UseRouting();
         app.UseAuthEndpoints();
     }
 
-    public static IApplicationBuilder UseAuthMiddlewares(this IApplicationBuilder builder)
+
+    public static void UseAuthStaticFiles(this WebApplication app)
+    {
+        var currentFileProvider = app.Environment.ContentRootFileProvider as PhysicalFileProvider;
+
+        //get app current ContentRootFileProvider
+
+        var myFileProvider = new MyPhysicalFileProvider(currentFileProvider?.Root!, app?.Services?.GetService<IHttpContextAccessor>()!);
+        app.Environment.ContentRootFileProvider = myFileProvider;
+
+        app.UseStaticFiles(new StaticFileOptions()
+        {
+            FileProvider = myFileProvider
+        });
+    }
+
+    public static IApplicationBuilder UseAuthMiddleware(this IApplicationBuilder builder)
     {
         if (builder == null)
         {
