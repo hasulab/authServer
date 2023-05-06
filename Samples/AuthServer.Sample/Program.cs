@@ -1,4 +1,4 @@
-using AuthServer.Extentions;
+using AuthServer.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuthServerServices();

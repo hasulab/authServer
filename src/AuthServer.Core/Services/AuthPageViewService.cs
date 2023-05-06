@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using AuthServer.Extensions;
 
 namespace AuthServer.Services;
 

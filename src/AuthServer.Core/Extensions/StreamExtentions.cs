@@ -1,8 +1,8 @@
 ﻿using System.Text;
 
-namespace AuthServer.Extentions;
+namespace AuthServer.Extensions;
 
-public static class StreamExtentions
+public static class StreamExtensions
 {
     public static Stream GenerateStreamFromString(string s)
     {
