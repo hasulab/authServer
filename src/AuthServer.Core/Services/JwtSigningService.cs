@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using AuthServer.Extensions;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AuthServer.Services;

@@ -1,7 +1,7 @@
 ﻿using System.Net.Mime;
 using System.Text;
 
-namespace AuthServer.Extentions;
+namespace AuthServer.Extensions;
 
 public static class ResultsExtensions
 {

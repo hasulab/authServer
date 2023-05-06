@@ -1,6 +1,6 @@
-﻿namespace AuthServer.Extentions;
+﻿namespace AuthServer.Extensions;
 
-public static class ServiceProviderExtentions
+public static class ServiceProviderExtensions
 {
     public static T? GetHttpContextFeature<T>(this IServiceProvider serviceProvider)
         where T: class, new()

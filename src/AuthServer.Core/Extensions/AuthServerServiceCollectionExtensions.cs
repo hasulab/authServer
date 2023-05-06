@@ -1,4 +1,4 @@
-﻿namespace AuthServer.Extentions;
+﻿namespace AuthServer.Extensions;
 
 public static class AuthServerServiceCollectionExtensions
 {

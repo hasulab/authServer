@@ -1,6 +1,6 @@
-﻿namespace AuthServer.Extentions;
+﻿namespace AuthServer.Extensions;
 
-public static class ObjectExtentions
+public static class ObjectExtensions
 {
     public static Dictionary<string,string> ToDictionary<T>(this T t)
         where T: class

@@ -12,5 +12,4 @@ global using static AuthServer.Constants.Auth;
 
 global using AuthServer.Services;
 global using AuthServer.Exceptions;
-global using AuthServer.Extentions;
 global using AuthServer.Models;
