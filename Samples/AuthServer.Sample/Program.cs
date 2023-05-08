@@ -5,7 +5,15 @@ builder.Services.AddAuthServerServices();
 
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+if (app.Environment.IsDevelopment())
+{
+    app.UseDevAuthHomepageEndpoint();
+}
+else
+{
+    app.MapGet("/", () => "Hello World!");
+}
+
 app.UseAuthStaticFiles();
 app.UseAuthServer();
 
