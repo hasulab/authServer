@@ -1,4 +1,6 @@
-﻿using AuthServer.Middlewares;
+﻿using AuthServer.Handlers;
+using AuthServer.Middlewares;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;
 
@@ -67,21 +69,16 @@ public static class AuthServerApplicationBuilderExtensions
 
     public static void UseDevAuthHomepageEndpoint(this IEndpointRouteBuilder app)
     {
-        app.MapGet("/", (LinkGenerator linker, IAuthPageViewService viewService) =>
-            {
-                var v2HomePage = linker.GetPathByName(AuthPage.HomePageV2, values: new { tenantId = Guid.Empty });
-                return Results.Redirect(v2HomePage);
-            })
+        app.MapGet("/",
+                async (IMediator mediator) => await mediator.Send(new DevPageRequestHandler.Request()))
             .WithName(AuthPage.HomePageV1);
     }
 
     public static void UseAuthEndpoints(this IEndpointRouteBuilder app)
     {
         app.MapGet("/{tenantId}/v2.0",
-                (HttpRequest request, IAuthPageViewService viewService, string tenantId) =>
-                {
-                    return viewService.RenderHomePage(tenantId);
-                })
+                async (IMediator mediator, string tenantId) =>
+                    await mediator.Send(new HomePageRequestHandler.Request(tenantId)))
             .WithName(AuthPage.HomePageV2);
 
         app.MapGet(WellKnownConfig.V1Url,

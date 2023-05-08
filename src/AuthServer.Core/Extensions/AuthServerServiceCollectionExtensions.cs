@@ -1,4 +1,6 @@
-﻿namespace AuthServer.Extensions;
+﻿using Microsoft.AspNetCore.Hosting;
+
+namespace AuthServer.Extensions;
 
 public static class AuthServerServiceCollectionExtensions
 {
@@ -38,6 +40,7 @@ public static class AuthServerServiceCollectionExtensions
         services
             .AddOptions<AuthSettings>().BindConfiguration("AuthSettings");
 
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<JwtSigningService>());
         return services;
     }
 }
