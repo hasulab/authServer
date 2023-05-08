@@ -65,6 +65,16 @@ public static class AuthServerApplicationBuilderExtensions
         return builder;
     }
 
+    public static void UseDevAuthHomepageEndpoint(this IEndpointRouteBuilder app)
+    {
+        app.MapGet("/", (LinkGenerator linker, IAuthPageViewService viewService) =>
+            {
+                var v2HomePage = linker.GetPathByName(AuthPage.HomePageV2, values: new { tenantId = Guid.Empty });
+                return Results.Redirect(v2HomePage);
+            })
+            .WithName(AuthPage.HomePageV1);
+    }
+
     public static void UseAuthEndpoints(this IEndpointRouteBuilder app)
     {
         app.MapGet("/{tenantId}/v2.0",

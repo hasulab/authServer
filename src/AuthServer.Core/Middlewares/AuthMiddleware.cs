@@ -19,12 +19,12 @@ public class AuthMiddleware
 
         if (httpContext.HasValidAuthPath())
         {
-            return AwaitRequestTask(httpContext);
+            return AwaitRequestTask(httpContext, _next);
         }
 
         return _next(httpContext);
 
-        static async Task AwaitRequestTask(HttpContext httpContext)
+        static async Task AwaitRequestTask(HttpContext httpContext, RequestDelegate next)
         {
             if (httpContext.Request.HasFormContentType)
             {
@@ -32,7 +32,7 @@ public class AuthMiddleware
             }
 
             httpContext.SetTenantsContext();
-            await Task.CompletedTask;
+            await next(httpContext);
         }
     }
 }
