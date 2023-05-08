@@ -44,19 +44,18 @@ public static class AuthResults
         {
             return Results.Ok(response);
         }
-        else if (response_mode == ResponseMode.fragment)
+        else switch (response_mode)
         {
-            var queryString = response.ToDictionary().ToQueryString();
+            case ResponseMode.fragment:
+            {
+                var queryString = response.ToDictionary().ToQueryString();
 
-            return Results.Redirect($"{redirect_uri}?{queryString}");
-        }
-        else if (response_mode == ResponseMode.form_post)
-        {
-            return Results.Ok(response);
-        }
-        else
-        {
-            throw new AuthException(Errors.invalid_resource, $"invalid {nameof(response_mode)} : {response_mode}");
+                return Results.Redirect($"{redirect_uri}?{queryString}");
+            }
+            case ResponseMode.form_post:
+                return Results.Ok(response);
+            default:
+                throw new AuthException(Errors.invalid_resource, $"invalid {nameof(response_mode)} : {response_mode}");
         }
     }
 }

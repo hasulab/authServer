@@ -17,8 +17,8 @@ internal class JwtSigningService : IJwtSigningService
 
     public SecurityKey GetSecurityKey(Guid tenantId)
     {
-        SecurityKey secret = null;
-        if (_tenantSettings.CertificateFile != null && _tenantSettings.CertificatePassword != null )
+        SecurityKey? secret = null;
+        if (_tenantSettings is { CertificateFile: not null, CertificatePassword: not null } )
         {
             var cert = new X509Certificate2(_tenantSettings.CertificateFile, _tenantSettings.CertificatePassword);
             secret = new X509SecurityKey(cert);
@@ -29,7 +29,7 @@ internal class JwtSigningService : IJwtSigningService
         }
         else
         {
-            _tenantSettings?.SecretKey.ThrowAuthExceptionIfNull(Errors.invalid_resource, "SecretKey or CertificateFile not configured");
+            _tenantSettings?.SecretKey?.ThrowAuthExceptionIfNull(Errors.invalid_resource, "SecretKey or CertificateFile not configured");
         }
         return secret;
     }

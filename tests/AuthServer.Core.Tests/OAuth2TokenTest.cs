@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Http;
 using Moq;
 using System.Security.Claims;
-using AuthServer.Extentions;
+using AuthServer.Extensions;
 using AuthServer.Models;
 using AuthServer.Services;
 
