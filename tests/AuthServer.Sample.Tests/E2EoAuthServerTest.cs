@@ -23,7 +23,7 @@ public class E2EoAuthServerTest
     }
 
     [Fact]
-    public async Task TestGetconfiguration()
+    public async Task TestGetConfiguration()
     {
         await using var application = new TestAuthWebApplication();
 
