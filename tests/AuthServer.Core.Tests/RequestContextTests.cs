@@ -1,5 +1,5 @@
 using System.Collections;
-using AuthServer.Extentions;
+using AuthServer.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Moq;

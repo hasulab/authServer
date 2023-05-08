@@ -4,7 +4,7 @@ namespace AuthServer.Extensions;
 
 public static class HttpContextExtensions
 {
-    const string versionRegEx = @"^v\d.\d$";
+    const string VersionRegEx = @"^v\d.\d$";
     public static void SetRequestContext(this HttpContext context)
     {
         var requestContext = context.Features.Get<AuthRequestContext>();
@@ -44,7 +44,7 @@ public static class HttpContextExtensions
 
         static bool TryVersion(string[] pathSegments, out float version)
         {
-            var versionString = pathSegments.FirstOrDefault(x => Regex.IsMatch(x, versionRegEx)) ?? "v1.0";
+            var versionString = pathSegments.FirstOrDefault(x => Regex.IsMatch(x, VersionRegEx)) ?? "v1.0";
             return float.TryParse(versionString.Replace("v", string.Empty), out version);
         }
     }
@@ -62,7 +62,7 @@ public static class HttpContextExtensions
         }
 
         var requestContext = context.Features.Get<AuthRequestContext>();
-        if (requestContext != null && requestContext.HasTenantId)
+        if (requestContext is { HasTenantId: true })
         {
             var tenantSettings = GetTenantSettings(context, requestContext.TenantId);
             context.Features.Set(tenantSettings);
@@ -96,7 +96,7 @@ public static class HttpContextExtensions
     public static bool HasValidAuthPath(this HttpContext context)
     {
         var requestContext = context.Features.Get<AuthRequestContext>();
-        if (requestContext != null && requestContext.HasTenantId)
+        if (requestContext is { HasTenantId: true })
         {
             var validAuthPath = requestContext.Path?.Replace(requestContext.TenantId.ToString(), UrlParams.tenantId) ?? string.Empty;
             return ValidAuthPaths.Contains(validAuthPath); 

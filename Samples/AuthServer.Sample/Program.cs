@@ -10,3 +10,5 @@ app.UseAuthStaticFiles();
 app.UseAuthServer();
 
 app.Run();
+
+public partial class Program { }
