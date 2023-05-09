@@ -1,6 +1,6 @@
 ﻿namespace AuthServer.Services;
 
-public class WellKnownConfiguration
+internal class WellKnownConfiguration
 {
     private readonly ResourceReader _resourceReader;
 
