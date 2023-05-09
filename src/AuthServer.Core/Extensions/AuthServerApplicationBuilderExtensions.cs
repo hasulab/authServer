@@ -92,21 +92,13 @@ public static class AuthServerApplicationBuilderExtensions
             .WithName(WellKnownConfig.V2EPName);
 
         app.MapPost(Token.V1Url,
-                (OAuth2Token tokenService, [FromBody] OAuthTokenRequest tokenRequest,
-                    [FromServices] AuthRequestContext requestContext) =>
-                {
-                    return AuthResults.HandleAuhResponse(tokenRequest.response_mode,
-                        () => tokenService.GenerateResponse(tokenRequest, requestContext));
-                })
+                 async (IMediator mediator, [FromBody] OAuthTokenRequest tokenRequest, string tenantId) => 
+                    await mediator.Send(new TokenRequestHandler.Request(tenantId, tokenRequest)))
             .WithName(Token.V1EPName);
 
         app.MapPost(Token.V2Url,
-                (OAuth2Token tokenService, [FromBody] OAuthTokenRequest tokenRequest,
-                    [FromServices] AuthRequestContext requestContext) =>
-                {
-                    return AuthResults.HandleAuhResponse(tokenRequest.response_mode,
-                        () => tokenService.GenerateResponse(tokenRequest, requestContext));
-                })
+                async (IMediator mediator, [FromBody] OAuthTokenRequest tokenRequest, string tenantId) =>
+                    await mediator.Send(new TokenRequestHandler.Request(tenantId, tokenRequest)))
             .WithName(Token.V2EPName);
 
 
