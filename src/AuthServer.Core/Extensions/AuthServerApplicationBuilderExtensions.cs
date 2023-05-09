@@ -82,37 +82,23 @@ public static class AuthServerApplicationBuilderExtensions
             .WithName(AuthPage.HomePageV2);
 
         app.MapGet(WellKnownConfig.V1Url,
-                (WellKnownConfiguration configuration, HttpRequest request, string tenantId) =>
-                {
-                    var siteName = $"{request.Scheme}://{request.Host.ToUriComponent()}";
-                    return Results.Text(configuration.GetV1(siteName, tenantId), "application/json");
-                })
+                async (IMediator mediator, HttpRequest request, string tenantId) =>
+                    await mediator.Send(new WellKnownConfigHandler.V1Request(tenantId, request)))
             .WithName(WellKnownConfig.V1EPName);
 
         app.MapGet(WellKnownConfig.V2Url,
-                (WellKnownConfiguration configuration, HttpRequest request, string tenantId) =>
-                {
-                    var siteName = $"{request.Scheme}://{request.Host.ToUriComponent()}";
-                    return Results.Text(configuration.GetV2(siteName, tenantId), "application/json");
-                })
+                async (IMediator mediator, HttpRequest request, string tenantId) =>
+                    await mediator.Send(new WellKnownConfigHandler.V2Request(tenantId, request)))
             .WithName(WellKnownConfig.V2EPName);
 
         app.MapPost(Token.V1Url,
-                (OAuth2Token tokenService, [FromBody] OAuthTokenRequest tokenRequest,
-                    [FromServices] AuthRequestContext requestContext) =>
-                {
-                    return AuthResults.HandleAuhResponse(tokenRequest.response_mode,
-                        () => tokenService.GenerateResponse(tokenRequest, requestContext));
-                })
+                 async (IMediator mediator, [FromBody] OAuthTokenRequest tokenRequest, string tenantId) => 
+                    await mediator.Send(new TokenRequestHandler.Request(tenantId, tokenRequest)))
             .WithName(Token.V1EPName);
 
         app.MapPost(Token.V2Url,
-                (OAuth2Token tokenService, [FromBody] OAuthTokenRequest tokenRequest,
-                    [FromServices] AuthRequestContext requestContext) =>
-                {
-                    return AuthResults.HandleAuhResponse(tokenRequest.response_mode,
-                        () => tokenService.GenerateResponse(tokenRequest, requestContext));
-                })
+                async (IMediator mediator, [FromBody] OAuthTokenRequest tokenRequest, string tenantId) =>
+                    await mediator.Send(new TokenRequestHandler.Request(tenantId, tokenRequest)))
             .WithName(Token.V2EPName);
 
 
